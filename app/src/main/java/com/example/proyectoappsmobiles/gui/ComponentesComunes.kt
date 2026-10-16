@@ -1,14 +1,17 @@
 package com.example.proyectoappsmobiles.gui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
@@ -188,6 +191,110 @@ fun ImagenEntrenador(modifier: Modifier = Modifier) {
                 color = Color.White.copy(alpha = 0.7f),
                 fontWeight = FontWeight.Bold
             )
+        }
+    }
+}
+
+@Composable
+fun BotonContorno(
+    texto: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Black
+) {
+    androidx.compose.material3.OutlinedButton(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(52.dp),
+        border = androidx.compose.foundation.BorderStroke(1.dp, color),
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+    ) {
+        Text(texto, color = color, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+fun LogoActivity(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(120.dp)
+            .background(Color(0xFF2B2B2B), androidx.compose.foundation.shape.RoundedCornerShape(24.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                imageVector = Icons.Default.FitnessCenter,
+                contentDescription = null,
+                tint = Naranja,
+                modifier = Modifier.size(52.dp)
+            )
+            Text("FORGED", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+            Text("FITNESS APP", color = Color.White.copy(alpha = 0.7f), fontSize = 8.sp)
+        }
+    }
+}
+
+@Composable
+fun IndicadoresPagina(total: Int, actual: Int, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        repeat(total) { indice ->
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .size(
+                        width = if (indice == actual) 24.dp else 8.dp,
+                        height = 8.dp
+                    )
+                    .background(
+                        color = if (indice == actual) Naranja else Color.Gray.copy(alpha = 0.5f),
+                        shape = CircleShape
+                    )
+            )
+        }
+    }
+}
+
+@Composable
+fun TiraDias(
+    diaSeleccionado: String,
+    onSeleccion: (String) -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    val dias = listOf(
+        "Lun" to "16", "Mar" to "17", "Mié" to "18", "Jue" to "19",
+        "Vie" to "20", "Sáb" to "21", "Dom" to "22"
+    )
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        dias.forEach { (dia, numero) ->
+            val seleccionado = numero == diaSeleccionado
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .background(
+                        color = if (seleccionado) Naranja else Color.Transparent,
+                        shape = CircleShape
+                    )
+                    .clickable { onSeleccion(numero) }
+                    .padding(horizontal = 10.dp, vertical = 8.dp)
+            ) {
+                Text(
+                    dia,
+                    fontSize = 11.sp,
+                    color = if (seleccionado) Color.White else Color.Gray
+                )
+                Text(
+                    numero,
+                    fontWeight = FontWeight.Bold,
+                    color = if (seleccionado) Color.White else Color.Black
+                )
+            }
         }
     }
 }

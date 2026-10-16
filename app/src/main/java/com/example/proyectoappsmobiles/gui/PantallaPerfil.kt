@@ -70,6 +70,13 @@ fun PantallaPerfil(navController: NavController, viewModel: AppViewModel = viewM
             Spacer(modifier = Modifier.height(24.dp))
 
             BotonNaranja(
+                texto = "Editar Perfil",
+                onClick = { navController.navigate(Pantallas.EDITAR_PERFIL) }
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            BotonNaranja(
                 texto = "Cerrar sesión",
                 color = Color.Red,
                 onClick = {

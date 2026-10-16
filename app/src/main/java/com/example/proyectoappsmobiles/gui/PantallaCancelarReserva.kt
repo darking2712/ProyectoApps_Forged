@@ -110,7 +110,7 @@ fun PantallaCancelarReserva(navController: NavController, viewModel: AppViewMode
             BotonNaranja(
                 texto = "Unirme a videollamada",
                 onClick = {
-                    Toast.makeText(context, "Abriendo videollamada...", Toast.LENGTH_SHORT).show()
+                    navController.navigate(Pantallas.UNIRSE_VIDEOLLAMADA)
                 }
             )
 
@@ -120,15 +120,7 @@ fun PantallaCancelarReserva(navController: NavController, viewModel: AppViewMode
                 texto = "Cancelar Reserva",
                 color = RojoError,
                 onClick = {
-                    viewModel.cancelarReserva(reserva.id) { exito ->
-                        if (exito) {
-                            navController.navigate(Pantallas.CONFIRMACION_CANCELACION) {
-                                popUpTo(Pantallas.INICIO)
-                            }
-                        } else {
-                            Toast.makeText(context, "Error al cancelar", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                    navController.navigate(Pantallas.VERIFICACION_CANCELACION)
                 }
             )
         }

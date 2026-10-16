@@ -68,14 +68,26 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 )
                 claseDao.insertar(
                     ClaseEntity(
-                        nombre = "Musculación",
-                        dia = "Miércoles",
-                        horario = "3:00 pm - 4:00 pm",
-                        entrenador = "Carlos Arturo",
-                        cuposOcupados = 5,
-                        cuposTotal = 10,
+                        nombre = "Yoga",
+                        dia = "Martes",
+                        horario = "7:00 pm - 8:00 pm",
+                        entrenador = "Laura Gomez",
+                        cuposOcupados = 12,
+                        cuposTotal = 15,
                         duracionMin = 60,
-                        descripcion = "Entrenamiento de fuerza personalizado"
+                        descripcion = "Mejora tu flexibilidad y postura"
+                    )
+                )
+                claseDao.insertar(
+                    ClaseEntity(
+                        nombre = "Entrenamiento funcional",
+                        dia = "Viernes",
+                        horario = "6:00 pm - 7:00 pm",
+                        entrenador = "Alejandro Correa",
+                        cuposOcupados = 9,
+                        cuposTotal = 15,
+                        duracionMin = 60,
+                        descripcion = "Trabaja tu cuerpo completo con ejercicios funcionales"
                     )
                 )
             }

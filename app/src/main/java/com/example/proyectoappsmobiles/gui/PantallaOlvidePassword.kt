@@ -1,6 +1,8 @@
 package com.example.proyectoappsmobiles.gui
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -67,7 +70,7 @@ fun PantallaOlvidePassword(navController: NavController, viewModel: AppViewModel
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "Ingresa tu email para recuperar tu contraseña",
+                text = "Ingresa tu información abajo o inicia sesión con otra cuenta",
                 fontSize = 14.sp,
                 color = Color.Gray
             )
@@ -94,11 +97,18 @@ fun PantallaOlvidePassword(navController: NavController, viewModel: AppViewModel
                 }
             )
             Spacer(modifier = Modifier.height(12.dp))
-            BotonNaranja(
-                texto = "Volver a iniciar Sesión",
-                color = Color.Gray,
-                onClick = { navController.popBackStack() }
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Volver a iniciar Sesión",
+                    color = Naranja,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    modifier = Modifier.clickable { navController.popBackStack() }
+                )
+            }
         }
     }
 }
