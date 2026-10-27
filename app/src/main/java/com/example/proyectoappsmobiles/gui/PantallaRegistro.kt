@@ -18,8 +18,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +42,7 @@ import com.example.proyectoappsmobiles.navigation.Pantallas
 import com.example.proyectoappsmobiles.ui.theme.Naranja
 import com.example.proyectoappsmobiles.ui.theme.RojoError
 import com.example.proyectoappsmobiles.viewmodel.AppViewModel
+
 
 @Composable
 fun PantallaRegistro(navController: NavController, viewModel: AppViewModel = viewModel()) {
@@ -72,7 +75,7 @@ fun PantallaRegistro(navController: NavController, viewModel: AppViewModel = vie
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Press con mancuernas", color = Color.White.copy(alpha = 0.35f), fontSize = 18.sp)
+                Text("Crea tu cuenta", color = Color.White.copy(alpha = 0.35f), fontSize = 18.sp)
             }
             Canvas(modifier = Modifier.fillMaxSize()) {
                 val path = Path().apply {
@@ -117,44 +120,51 @@ fun PantallaRegistro(navController: NavController, viewModel: AppViewModel = vie
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            CampoSubrayado(
-                valor = nombre,
-                etiqueta = "Nombre completo",
-                onValorChange = { nombre = it }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            CampoSubrayado(
-                valor = email,
-                etiqueta = "Email",
-                onValorChange = { email = it },
-                keyboardType = KeyboardType.Email
-            )
-            if (mostrarErrorEmail) {
-                Spacer(modifier = Modifier.height(6.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Cancel, null, tint = RojoError, modifier = Modifier.height(16.dp))
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        "Haz intentado con un correo invalido intenta de nuevo",
-                        color = RojoError,
-                        fontSize = 12.sp
-                    )
+                CampoSubrayado(
+                    valor = nombre,
+                    etiqueta = "Nombre completo",
+                    onValorChange = { nombre = it }
+
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                CampoSubrayado(
+                    valor = email,
+                    etiqueta = "Email",
+                    onValorChange = { email = it },
+                    keyboardType = KeyboardType.Email
+                )
+                if (mostrarErrorEmail) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.Cancel,
+                            null,
+                            tint = RojoError,
+                            modifier = Modifier.height(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            "Haz intentado con un correo invalido intenta de nuevo",
+                            color = RojoError,
+                            fontSize = 12.sp
+                        )
+                    }
                 }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            CampoSubrayado(
-                valor = password,
-                etiqueta = "Password",
-                onValorChange = { password = it },
-                esPassword = true
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            CampoSubrayado(
-                valor = passwordAgain,
-                etiqueta = "Password again",
-                onValorChange = { passwordAgain = it },
-                esPassword = true
-            )
+                Spacer(modifier = Modifier.height(16.dp))
+                CampoSubrayado(
+                    valor = password,
+                    etiqueta = "Password",
+                    onValorChange = { password = it },
+                    esPassword = true
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                CampoSubrayado(
+                    valor = passwordAgain,
+                    etiqueta = "Password again",
+                    onValorChange = { passwordAgain = it },
+                    esPassword = true
+                )
+
 
             Spacer(modifier = Modifier.height(24.dp))
 

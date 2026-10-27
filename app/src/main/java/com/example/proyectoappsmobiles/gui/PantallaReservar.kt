@@ -1,5 +1,11 @@
 package com.example.proyectoappsmobiles.gui
 
+
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.proyectoappsmobiles.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -49,13 +55,16 @@ private data class ClaseCard(
     val horario: String,
     val entrenador: String,
     val cupos: String,
-    val id: Int
+    val id: Int,
+    @DrawableRes val imagen: Int
 )
 
 private data class EntrenadorCard(
     val nombre: String,
     val rol: String,
-    val rating: String
+    val rating: String,
+    val IdEntrenador: Int,
+    @DrawableRes val imagen: Int
 )
 
 @Composable
@@ -65,14 +74,14 @@ fun PantallaReservar(navController: NavController) {
     val tabs = listOf("Grupales", "Personal", "Mis reservas")
 
     val grupos = listOf(
-        ClaseCard("Spinning", "6:00 - 7:00 pm", "Carlos Arturo", "8/15 cupos", 1),
-        ClaseCard("Yoga", "7:00 - 8:00 pm", "Laura Gomez", "12/15 cupos", 2),
-        ClaseCard("Entrenamiento funcional", "6:00 - 7:00 pm", "Alejandro Correa", "9/15 cupos", 3)
+        ClaseCard("Spinning", "6:00 - 7:00 pm", "Carlos Arturo", "8/15 cupos", 1, R.drawable.spinning),
+        ClaseCard("Yoga", "7:00 - 8:00 pm", "Laura Gomez", "12/15 cupos", 2, R.drawable.yoga),
+        ClaseCard("Entrenamiento funcional", "6:00 - 7:00 pm", "Alejandro Correa", "9/15 cupos", 3, R.drawable.funcional)
     )
     val personales = listOf(
-        EntrenadorCard("Carlos Arturo", "Entrenador personal", "4.9 (180 reseñas)"),
-        EntrenadorCard("Laura Gomez", "Entrenadora Personal", "4.8 (150 reseñas)"),
-        EntrenadorCard("Diego Ramirez", "Entrenador Personal", "4.8 (150 reseñas)")
+        EntrenadorCard("Carlos Arturo", "Entrenador personal", "4.9 (180 reseñas)",1, R.drawable.entrenador11),
+        EntrenadorCard("Laura Gomez", "Entrenadora Personal", "4.8 (150 reseñas)",2, R.drawable.entrenadora),
+        EntrenadorCard("Diego Ramirez", "Entrenador Personal", "4.8 (150 reseñas)", 3, R.drawable.entrenador2)
     )
 
     Scaffold(
@@ -112,19 +121,14 @@ fun PantallaReservar(navController: NavController) {
                                 modifier = Modifier.padding(12.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(
+                                Image(
+                                    painter = painterResource(id = clase.imagen),
+                                    contentDescription = clase.nombre,
                                     modifier = Modifier
                                         .size(64.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(
-                                            Brush.verticalGradient(
-                                                listOf(Color(0xFF37474F), Color(0xFF546E7A))
-                                            )
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(Icons.Default.FitnessCenter, null, tint = Color.White.copy(alpha = 0.7f))
-                                }
+                                        .clip(RoundedCornerShape(10.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(clase.nombre, fontWeight = FontWeight.Bold, fontSize = 15.sp)
@@ -156,19 +160,14 @@ fun PantallaReservar(navController: NavController) {
                                 modifier = Modifier.padding(12.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(
+                                Image(
+                                    painter = painterResource(id = entrenador.imagen),
+                                    contentDescription = entrenador.nombre,
                                     modifier = Modifier
                                         .size(64.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(
-                                            Brush.verticalGradient(
-                                                listOf(Color(0xFF6D4C41), Color(0xFF3E2723))
-                                            )
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(Icons.Default.Person, null, tint = Color.White.copy(alpha = 0.8f))
-                                }
+                                        .clip(RoundedCornerShape(10.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(entrenador.nombre, fontWeight = FontWeight.Bold, fontSize = 15.sp)
@@ -176,7 +175,9 @@ fun PantallaReservar(navController: NavController) {
                                     Text("⭐ ${entrenador.rating}", color = Naranja, fontSize = 12.sp)
                                 }
                                 Button(
-                                    onClick = { navController.navigate(Pantallas.DETALLE_ENTRENADOR) },
+                                    onClick = {
+                                        navController.navigate("${Pantallas.DETALLE_ENTRENADOR}/${entrenador.IdEntrenador}")
+                                    },
                                     colors = ButtonDefaults.buttonColors(containerColor = Naranja),
                                     shape = RoundedCornerShape(10.dp)
                                 ) {

@@ -1,5 +1,9 @@
 package com.example.proyectoappsmobiles.gui
 
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.proyectoappsmobiles.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -46,9 +50,10 @@ import com.example.proyectoappsmobiles.viewmodel.AppViewModel
 @Composable
 fun PantallaInicio(navController: NavController, viewModel: AppViewModel = viewModel()) {
     var nivelSeleccionado by remember { mutableIntStateOf(0) }
-    val niveles = listOf("Beginner", "Intermediate", "Advance")
+    val niveles = listOf("Principiante", "Intermedio", "Avanzado")
 
     Scaffold(
+
         bottomBar = { MenuInferior(navController) }
     ) { padding ->
         Column(
@@ -68,7 +73,7 @@ fun PantallaInicio(navController: NavController, viewModel: AppViewModel = viewM
             EncabezadoSeccion(
                 titulo = "Listo para entrenar",
                 textoLink = "ver reservas",
-                onLinkClick = { navController.navigate(Pantallas.RESERVAR) }
+                onLinkClick = { navController.navigate(Pantallas.CALENDARIO) }
             )
             Spacer(modifier = Modifier.height(8.dp))
             Card(
@@ -82,17 +87,15 @@ fun PantallaInicio(navController: NavController, viewModel: AppViewModel = viewM
                     modifier = Modifier.padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(
+                    Image(
+                        painter = painterResource(id = R.drawable.yoga),
+                        contentDescription = "Cinta",
                         modifier = Modifier
                             .size(72.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(
-                                Brush.verticalGradient(listOf(Color(0xFF37474F), Color(0xFF546E7A)))
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Cinta", color = Color.White.copy(alpha = 0.6f), fontSize = 12.sp)
-                    }
+                            .clip(RoundedCornerShape(10.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text("Yoga", fontWeight = FontWeight.Bold, fontSize = 16.sp)
@@ -130,10 +133,15 @@ fun PantallaInicio(navController: NavController, viewModel: AppViewModel = viewM
                     .clickable { navController.navigate(Pantallas.RUTINA) },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "Hombre haciendo abdominales",
-                    color = Color.White.copy(alpha = 0.55f),
-                    fontSize = 14.sp
+                Image(
+                    painter = painterResource(id = R.drawable.abdominales),
+                    contentDescription = "Rutina",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(140.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .clickable { navController.navigate(Pantallas.RUTINA) },
+                    contentScale = ContentScale.Crop
                 )
             }
 

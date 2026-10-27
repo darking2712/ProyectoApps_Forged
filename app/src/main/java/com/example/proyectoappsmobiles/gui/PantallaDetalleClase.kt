@@ -1,6 +1,8 @@
 package com.example.proyectoappsmobiles.gui
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -26,16 +29,29 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.proyectoappsmobiles.R
 import com.example.proyectoappsmobiles.navigation.Pantallas
 import com.example.proyectoappsmobiles.ui.theme.Naranja
 import com.example.proyectoappsmobiles.viewmodel.AppViewModel
+
+fun obtenerImagenClase(nombreClase: String): Int{
+        return when {
+            nombreClase.contains("spinning", ignoreCase = true) -> R.drawable.spinning
+            nombreClase.contains("yoga", ignoreCase = true) -> R.drawable.yoga
+            nombreClase.contains("Entrenamiento Funcional", ignoreCase = true) -> R.drawable.funcional
+            else -> R.drawable.spinning
+            }
+    }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,6 +88,7 @@ fun PantallaDetalleClase(
             }
             return@Scaffold
         }
+        val imagenRes = obtenerImagenClase(clase.nombre)
 
         Column(
             modifier = Modifier
@@ -80,10 +97,15 @@ fun PantallaDetalleClase(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            ImagenSpinning(
+            Image(
+                painter = painterResource(id = imagenRes),
+                contentDescription = "Imagen de ${clase.nombre}",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(140.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable { navController.navigate(Pantallas.RUTINA) },
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(clase.nombre, fontSize = 24.sp, fontWeight = FontWeight.Bold)
@@ -111,7 +133,8 @@ fun PantallaDetalleClase(
                 onClick = {
                     viewModel.reservarClaseGrupal(clase.id, "Lun, 18 sep", "6:00 pm") { exito ->
                         if (exito) {
-                            navController.navigate(Pantallas.CONFIRMACION_RESERVA_GRUPAL) {
+                            // Pasamos el ID de la clase como argumento en la navegación
+                            navController.navigate("${Pantallas.CONFIRMACION_RESERVA_GRUPAL}/${clase.id}") {
                                 popUpTo(Pantallas.INICIO)
                             }
                         } else {

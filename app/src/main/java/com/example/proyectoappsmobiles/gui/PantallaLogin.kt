@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -164,7 +165,7 @@ fun PantallaLogin(navController: NavController, viewModel: AppViewModel = viewMo
                 texto = "Login ›",
                 onClick = {
                     viewModel.login(email, password) { exito ->
-                        if (exito || emailValido) {
+                        if (exito && emailValido) {
                             Toast.makeText(context, "Bienvenido", Toast.LENGTH_SHORT).show()
                             navController.navigate(Pantallas.INICIO) {
                                 popUpTo(Pantallas.LOGIN) { inclusive = true }
@@ -219,10 +220,12 @@ fun CampoSubrayado(
     onAlternarPassword: (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     trailing: (@Composable () -> Unit)? = null
+
 ) {
     TextField(
         value = valor,
         onValueChange = onValorChange,
+        textStyle = TextStyle(color = Color.Black),
         label = { Text(etiqueta) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),

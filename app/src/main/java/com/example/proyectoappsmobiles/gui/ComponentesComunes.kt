@@ -1,5 +1,10 @@
 package com.example.proyectoappsmobiles.gui
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import com.example.proyectoappsmobiles.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -55,7 +60,7 @@ val itemsMenu = listOf(
     ItemMenu(Pantallas.INICIO, "Inicio", Icons.Default.Home),
     ItemMenu(Pantallas.ESTADISTICAS, "Estadísticas", Icons.Default.BarChart),
     ItemMenu(Pantallas.ENTRENADOR, "Entrenador", Icons.Default.FitnessCenter),
-    ItemMenu(Pantallas.CALENDARIO, "Calendario", Icons.Default.CalendarMonth),
+    ItemMenu(Pantallas.RESERVAR, "Agendar", Icons.Default.CalendarMonth),
     ItemMenu(Pantallas.PAGOS, "Pagos", Icons.Default.CreditCard),
     ItemMenu(Pantallas.PERFIL, "Perfil", Icons.Default.Person)
 )
@@ -216,24 +221,17 @@ fun BotonContorno(
 
 @Composable
 fun LogoActivity(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .size(120.dp)
-            .background(Color(0xFF2B2B2B), androidx.compose.foundation.shape.RoundedCornerShape(24.dp)),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                imageVector = Icons.Default.FitnessCenter,
-                contentDescription = null,
-                tint = Naranja,
-                modifier = Modifier.size(52.dp)
-            )
+    Image(
+        painter = painterResource(id = R.drawable.forget),
+        contentDescription = "Logo Forged",
+        modifier = modifier.size(120.dp),
+        contentScale = ContentScale.Fit
+    )
+
             Text("FORGED", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
             Text("FITNESS APP", color = Color.White.copy(alpha = 0.7f), fontSize = 8.sp)
         }
-    }
-}
+
 
 @Composable
 fun IndicadoresPagina(total: Int, actual: Int, modifier: Modifier = Modifier) {

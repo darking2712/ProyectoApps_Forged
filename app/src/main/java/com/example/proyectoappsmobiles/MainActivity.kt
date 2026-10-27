@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -50,6 +51,7 @@ import com.example.proyectoappsmobiles.gui.PantallaVerificacionCancelacion
 import com.example.proyectoappsmobiles.gui.PantallaVideollamada
 import com.example.proyectoappsmobiles.navigation.Pantallas
 import com.example.proyectoappsmobiles.ui.theme.ProyectoAppsMobilesTheme
+import com.example.proyectoappsmobiles.viewmodel.AppViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +68,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavegacion() {
     val navController = rememberNavController()
+    val appViewModel: AppViewModel= viewModel()
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
         NavHost(
             modifier = Modifier.padding(padding),
@@ -79,7 +82,7 @@ fun AppNavegacion() {
                 PantallaOnboarding(navController)
             }
             composable(Pantallas.LOGIN) {
-                PantallaLogin(navController)
+                PantallaLogin(navController, appViewModel)
             }
             composable(Pantallas.REGISTRO) {
                 PantallaRegistro(navController)
@@ -97,7 +100,7 @@ fun AppNavegacion() {
                 PantallaDetallesPerfil(navController)
             }
             composable(Pantallas.INICIO) {
-                PantallaInicio(navController)
+                PantallaInicio(navController, appViewModel)
             }
             composable(Pantallas.HOME_ENTRENADOR) {
                 PantallaHomeEntrenador(navController)
@@ -115,13 +118,17 @@ fun AppNavegacion() {
                 PantallaPagos(navController)
             }
             composable(Pantallas.PERFIL) {
-                PantallaPerfil(navController)
+                PantallaPerfil(navController, appViewModel)
             }
             composable(Pantallas.EDITAR_PERFIL) {
                 PantallaEditarPerfil(navController)
             }
-            composable(Pantallas.DETALLE_ENTRENADOR) {
-                PantallaDetalleEntrenador(navController)
+            composable(
+                route = "${Pantallas.DETALLE_ENTRENADOR}/{entrenadorId}",
+                arguments = listOf(navArgument("entrenadorId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val id = backStackEntry.arguments?.getInt("entrenadorId") ?: 1
+                PantallaDetalleEntrenador(navController, entrenadorId = id)
             }
             composable(Pantallas.DISPONIBILIDAD) {
                 PantallaDisponibilidad(navController)
@@ -144,8 +151,12 @@ fun AppNavegacion() {
             composable(Pantallas.CONFIRMACION_RESERVA) {
                 PantallaConfirmacionReserva(navController)
             }
-            composable(Pantallas.CONFIRMACION_RESERVA_GRUPAL) {
-                PantallaConfirmacionReservaGrupal(navController)
+            composable(
+                route = "${Pantallas.CONFIRMACION_RESERVA_GRUPAL}/{claseId}",
+                arguments = listOf(navArgument("claseId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val claseId = backStackEntry.arguments?.getInt("claseId") ?: 0
+                PantallaConfirmacionReservaGrupal(navController, claseId = claseId)
             }
             composable(Pantallas.CANCELAR_RESERVA) {
                 PantallaCancelarReserva(navController)
