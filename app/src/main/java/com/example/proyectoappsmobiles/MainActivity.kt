@@ -76,7 +76,7 @@ fun AppNavegacion() {
             startDestination = Pantallas.SPLASH
         ) {
             composable(Pantallas.SPLASH) {
-                PantallaSplash(navController)
+                PantallaSplash(navController, appViewModel)
             }
             composable(Pantallas.ONBOARDING) {
                 PantallaOnboarding(navController)
@@ -85,7 +85,7 @@ fun AppNavegacion() {
                 PantallaLogin(navController, appViewModel)
             }
             composable(Pantallas.REGISTRO) {
-                PantallaRegistro(navController)
+                PantallaRegistro(navController, appViewModel)
             }
             composable(Pantallas.OLVIDE_PASSWORD) {
                 PantallaOlvidePassword(navController)

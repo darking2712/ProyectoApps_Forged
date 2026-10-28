@@ -22,20 +22,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.proyectoappsmobiles.navigation.Pantallas
+import com.example.proyectoappsmobiles.viewmodel.AppViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun PantallaSplash(navController: NavController) {
-    var avanzar by remember { mutableStateOf(false) }
+fun PantallaSplash(navController: NavController, viewModel: AppViewModel) {
+    var tiempoCumplido by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         delay(1800)
-        avanzar = true
+        tiempoCumplido = true
     }
 
-    if (avanzar) {
-        navController.navigate(Pantallas.ONBOARDING) {
-            popUpTo(Pantallas.SPLASH) { inclusive = true }
+    if (tiempoCumplido && viewModel.sesionRestaurada) {
+        val destino = if (viewModel.usuarioActual != null) {
+            Pantallas.INICIO
+        } else {
+            Pantallas.ONBOARDING
+        }
+
+        LaunchedEffect(destino) {
+            navController.navigate(destino) {
+                popUpTo(Pantallas.SPLASH) { inclusive = true }
+            }
         }
     }
 

@@ -80,6 +80,7 @@ fun PantallaPerfil(navController: NavController, viewModel: AppViewModel = viewM
                 texto = "Cerrar sesión",
                 color = Color.Red,
                 onClick = {
+                    viewModel.cerrarSesion()
                     Toast.makeText(context, "Sesión cerrada", Toast.LENGTH_SHORT).show()
                     navController.navigate(Pantallas.LOGIN) {
                         popUpTo(0) { inclusive = true }

@@ -12,12 +12,14 @@ import com.example.proyectoappsmobiles.data.entity.EntrenadorEntity
 import com.example.proyectoappsmobiles.data.entity.MembresiaEntity
 import com.example.proyectoappsmobiles.data.entity.ReservaEntity
 import com.example.proyectoappsmobiles.data.entity.UsuarioEntity
+import com.example.proyectoappsmobiles.data.preferences.SessionManager
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = DatabaseProvider.getDatabase(application)
+    private val sessionManager = SessionManager(application)
     private val usuarioDao = db.usuarioDao()
     private val entrenadorDao = db.entrenadorDao()
     private val claseDao = db.claseDao()
@@ -32,9 +34,25 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     var usuarioActual by mutableStateOf<UsuarioEntity?>(null)
         private set
 
+    /** Indica si ya se intentó recuperar la sesión guardada en SharedPreferences. */
+    var sesionRestaurada by mutableStateOf(false)
+        private set
+
     var reservaSeleccionada by mutableStateOf<ReservaEntity?>(null)
 
     init {
+        viewModelScope.launch {
+            val emailGuardado = sessionManager.obtenerEmailSesion()
+            if (emailGuardado != null) {
+                usuarioActual = usuarioDao.existeEmail(emailGuardado)
+                if (usuarioActual == null) {
+                    // El usuario ya no existe en la base de datos: se descarta la sesión.
+                    sessionManager.cerrarSesion()
+                }
+            }
+            sesionRestaurada = true
+        }
+
         viewModelScope.launch {
             if (usuarioDao.contar() == 0) {
                 usuarioDao.insertar(
@@ -126,7 +144,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             if (nombre.isBlank() || email.isBlank() || password.isBlank()) {
                 onResult(false)
             } else {
-                usuarioDao.insertar(UsuarioEntity(email, nombre, password))
+                val usuario = UsuarioEntity(email, nombre, password)
+                usuarioDao.insertar(usuario)
+                usuarioActual = usuario
+                sessionManager.guardarSesion(email)
                 onResult(true)
             }
         }
@@ -136,8 +157,16 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val usuario = usuarioDao.autenticar(email, password)
             usuarioActual = usuario
+            if (usuario != null) {
+                sessionManager.guardarSesion(usuario.email)
+            }
             onResult(usuario != null)
         }
+    }
+
+    fun cerrarSesion() {
+        sessionManager.cerrarSesion()
+        usuarioActual = null
     }
 
     fun recuperarPassword(email: String, onResult: (Boolean) -> Unit) {
